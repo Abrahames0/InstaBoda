@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import { Imagenes, Usuarios } from "../models";
+import { MdAddAPhoto } from "react-icons/md";
 
 const Dashboard = () => {
   const [images, setImages] = useState([]);
@@ -8,7 +9,6 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Cargar usuarios e imágenes al montar el componente
   useEffect(() => {
     const fetchData = async () => {
       const allImages = await DataStore.query(Imagenes);
@@ -17,7 +17,6 @@ const Dashboard = () => {
       setImages(allImages);
       setFilteredImages(allImages);
 
-      // Asegúrate de que solo se muestran usuarios que tienen imágenes relacionadas
       const usersWithImages = allUsers.filter((user) =>
         allImages.some((image) => image.usuariosID === user.id)
       );
@@ -27,7 +26,6 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  // Manejar filtro de imágenes por usuario
   const handleFilter = (userId) => {
     if (userId === "all") {
       setFilteredImages(images);
@@ -40,75 +38,95 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="flex items-center justify-between mb-6">
-        {/* Botón de registro */}
+    <div className="min-h-screen bg-white p-4">
+      {/* Barra Superior */}
+      <div className="flex items-center mb-6 overflow-x-auto space-x-4">
+        {/* Botón para agregar nueva imagen */}
         <button
-          onClick={() => window.location.href = "/register"}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800"
+          onClick={() => (window.location.href = "/formulario")}
+          className="flex-shrink-0 flex items-center justify-center w-16 h-16 bg-white text-[#000080] border border-[#4e4e91] rounded-full hover:bg-[#4e4e91] hover:text-white transition-colors duration-200 ease-in-out"
         >
-          Ir al Registro
+          <MdAddAPhoto size={25} />
         </button>
 
-        {/* Botones de usuarios */}
-        <div className="flex gap-2">
-          {/* Botón para mostrar todas las imágenes */}
-          <button
-            onClick={() => handleFilter("all")}
-            className={`px-4 py-2 rounded-full ${
-              selectedUser === null
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+        {/* Botón para mostrar todas las imágenes */}
+        <button
+          onClick={() => handleFilter("all")}
+          className={`flex-shrink-0 w-16 h-16 rounded-full border-2 ${
+            selectedUser === null
+              ? "border-[#000080]"
+              : "border-gray-300 hover:border-[#4e4e91]"
+          } flex items-center justify-center text-sm font-semibold relative`}
+        >
+          <span
+            className={`${
+              selectedUser === null ? "text-[#000080]" : "text-gray-700"
             }`}
           >
             Todos
+          </span>
+        </button>
+
+        {/* Íconos de usuarios */}
+        {users.map((user) => (
+          <button
+            key={user.id}
+            onClick={() => handleFilter(user.id)}
+            className={`flex-shrink-0 w-16 h-16 rounded-full border-2 ${
+              selectedUser === user.id
+                ? "border-[#000080] hover:border-[#000080]"
+                : "border-gray-300 hover:border-[#4e4e91]"
+            } flex items-center justify-center relative overflow-hidden`}
+          >
+            {user.imagenPerfil ? (
+              <img
+                title={user.nombre}
+                src={user.imagenPerfil}
+                alt={user.nombre}
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <span
+                className={`${
+                  selectedUser === user.id ? "text-[#000080]" : "text-gray-700"
+                } font-semibold`}
+              >
+                {user.nombre.charAt(0).toUpperCase()}
+              </span>
+            )}
           </button>
-
-          {/* Botones para cada usuario */}
-          {users.map((user) => (
-            <button
-              key={user.id}
-              onClick={() => handleFilter(user.id)}
-              className={`w-10 h-10 rounded-full border-2 ${
-                selectedUser === user.id
-                  ? "border-blue-600"
-                  : "border-gray-300 hover:border-blue-400"
-              } flex items-center justify-center text-sm font-semibold relative`}
-            >
-              {/* Imagen de perfil */}
-              {user.imagenPerfil ? (
-                <img
-                  title={user.nombre}
-                  src={user.imagenPerfil}
-                  alt={user.nombre}
-                  className="w-full h-full rounded-full object-cover"
-                />
-              ) : (
-                /* Inicial del nombre si no hay imagen de perfil */
-                <span className="text-blue-600">
-                  {user.nombre.charAt(0).toUpperCase()}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Galería de imágenes */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {filteredImages.map((image) => (
-          <div key={image.id} className="rounded-lg overflow-hidden shadow-md">
-            <img
-              src={image.url}
-              alt={image.description}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-2 bg-white">
-              <p className="text-sm text-gray-600">{image.description}</p>
-            </div>
-          </div>
         ))}
       </div>
+
+      {filteredImages.length > 0 ? (
+        <div className="columns-2 sm:columns-3 md:columns-4 gap-4">
+          {filteredImages.map((image) => (
+            <div
+              key={image.id}
+              className="mb-4 break-inside-avoid rounded-lg overflow-hidden shadow-md"
+            >
+              <img
+                src={image.url}
+                alt={image.description}
+                className="w-full h-auto"
+              />
+              <div className="p-2 bg-white">
+                <p className="text-sm text-gray-500">{image.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center mt-20">
+          <p className="text-gray-600 mb-4">No hay publicaciones disponibles.</p>
+          <button
+            onClick={() => (window.location.href = "/formulario")}
+            className="px-4 py-2 bg-[#000080] text-white rounded-full hover:bg-[#4e4e91] transition-colors duration-200 ease-in-out"
+          >
+            Agregar una nueva publicación
+          </button>
+        </div>
+      )}
     </div>
   );
 };
