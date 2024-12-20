@@ -1,6 +1,6 @@
 type Imagenes @model @auth(rules: [{allow: public}]) {
   id: ID!
-  url: String
+  url: [String]
   description: String
   likes: Int
   Usuarios: Usuarios @belongsTo(fields: ["usuariosID"])

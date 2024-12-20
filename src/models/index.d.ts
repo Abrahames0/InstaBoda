@@ -12,7 +12,7 @@ type EagerImagenes = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly url?: string | null;
+  readonly url?: (string | null)[] | null;
   readonly description?: string | null;
   readonly likes?: number | null;
   readonly Usuarios?: Usuarios | null;
@@ -27,7 +27,7 @@ type LazyImagenes = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly url?: string | null;
+  readonly url?: (string | null)[] | null;
   readonly description?: string | null;
   readonly likes?: number | null;
   readonly Usuarios: AsyncItem<Usuarios | undefined>;

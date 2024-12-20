@@ -12,10 +12,11 @@ export const schema = {
                 },
                 "url": {
                     "name": "url",
-                    "isArray": false,
+                    "isArray": true,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "description": {
                     "name": "description",
@@ -190,5 +191,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "3716f266a2ad7b45037f34f5eb451b9d"
+    "version": "8863d8849c6ef49be7d7f0f33aadb5b3"
 };

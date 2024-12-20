@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import { Imagenes } from "../models";
 import { uploadData } from "@aws-amplify/storage";
-import { FcCamera, FcUpload } from "react-icons/fc";
+import { FcUpload } from "react-icons/fc";
 
 const AddPublication = () => {
   const fileInput = useRef(null);
@@ -100,16 +100,6 @@ const AddPublication = () => {
           <span className="text-gray-700">
             Agrega las imágenes {files.length > 0 && <span>({files.length} seleccionadas)</span>}
           </span>
-        </div>
-      </div>
-
-      <div
-        className="w-full max-w-lg p-4 border border-gray-300 rounded-2xl flex items-center justify-center cursor-pointer mb-4 hover:border-blue-500"
-        onClick={openCamera}
-      >
-        <div className="flex flex-col items-center">
-          <FcCamera size={28} />
-          <span className="text-gray-700">Tomar una foto</span>
         </div>
       </div>
 
