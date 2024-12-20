@@ -16,7 +16,8 @@
         "instaboda2230ca62": {
           "bucketName": "stayfinder-storage-771fbe21d527c-dev",
           "region": "us-east-1"
-        }
+        },
+        "s3instabodastorage9f7968d5": {}
       },
       "auth": {
         "instaboda": {}
