@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataStore } from "@aws-amplify/datastore";
 import { Imagenes, Usuarios } from "../models";
 import { MdAddAPhoto } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Dashboard = () => {
   const [images, setImages] = useState([]);
@@ -39,24 +40,31 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-white p-4">
-      {/* Barra Superior */}
-      <div className="flex items-center mb-6 overflow-x-auto space-x-4">
-        {/* Botón para agregar nueva imagen */}
-        <button
+      {/* Barra Superior animada */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="flex items-center mb-6 overflow-x-auto space-x-4"
+      >
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => (window.location.href = "/formulario")}
           className="flex-shrink-0 flex items-center justify-center w-16 h-16 bg-white text-[#000080] border border-[#4e4e91] rounded-full hover:bg-[#4e4e91] hover:text-white transition-colors duration-200 ease-in-out"
         >
           <MdAddAPhoto size={25} />
-        </button>
+        </motion.button>
 
-        {/* Botón para mostrar todas las imágenes */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => handleFilter("all")}
           className={`flex-shrink-0 w-16 h-16 rounded-full border-2 ${
             selectedUser === null
               ? "border-[#000080]"
               : "border-gray-300 hover:border-[#4e4e91]"
-          } flex items-center justify-center text-sm font-semibold relative`}
+          } flex items-center justify-center text-sm font-semibold relative transition-colors`}
         >
           <span
             className={`${
@@ -65,18 +73,20 @@ const Dashboard = () => {
           >
             Todos
           </span>
-        </button>
+        </motion.button>
 
-        {/* Íconos de usuarios */}
+        {/* Íconos de usuarios con animación de hover */}
         {users.map((user) => (
-          <button
+          <motion.button
             key={user.id}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleFilter(user.id)}
             className={`flex-shrink-0 w-16 h-16 rounded-full border-2 ${
               selectedUser === user.id
                 ? "border-[#000080] hover:border-[#000080]"
                 : "border-gray-300 hover:border-[#4e4e91]"
-            } flex items-center justify-center relative overflow-hidden`}
+            } flex items-center justify-center relative overflow-hidden transition-colors`}
           >
             {user.imagenPerfil ? (
               <img
@@ -94,38 +104,51 @@ const Dashboard = () => {
                 {user.nombre.charAt(0).toUpperCase()}
               </span>
             )}
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
 
       {filteredImages.length > 0 ? (
-        <div className="columns-2 sm:columns-3 md:columns-4 gap-4">
-          {filteredImages.map((image) => (
-            <div
-              key={image.id}
-              className="mb-4 break-inside-avoid rounded-lg overflow-hidden shadow-md"
-            >
-              <img
-                src={image.url}
-                alt={image.description}
-                className="w-full h-auto"
-              />
-              <div className="p-2 bg-white">
-                <p className="text-sm text-gray-500">{image.description}</p>
-              </div>
-            </div>
-          ))}
+        <div className="columns-2 sm:columns-3 items-center md:columns-4 gap-4">
+          <AnimatePresence>
+            {filteredImages.map((image) => (
+              <motion.div
+                key={image.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="mb-4 break-inside-avoid items-center rounded-lg overflow-hidden shadow-md"
+              >
+                <img
+                  src={image.url}
+                  alt={image.description}
+                  className="w-full h-auto"
+                />
+                <div className="p-2 bg-white">
+                  <p className="text-sm text-gray-500">{image.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center mt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col items-center justify-center mt-20"
+        >
           <p className="text-gray-600 mb-4">No hay publicaciones disponibles.</p>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => (window.location.href = "/formulario")}
             className="px-4 py-2 bg-[#000080] text-white rounded-full hover:bg-[#4e4e91] transition-colors duration-200 ease-in-out"
           >
             Agregar una nueva publicación
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       )}
     </div>
   );

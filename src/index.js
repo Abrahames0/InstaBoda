@@ -8,6 +8,7 @@ import AddPublication from './pages/formulario';
 import { Amplify } from "aws-amplify";
 import awsExports from './aws-exports';
 import Dashboard from './pages/dashboard';
+import Welcome from './pages/Bienvenida';
 
 Amplify.configure(awsExports);
 
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   
   {
     path: "/",
+    element: <Welcome />,
+  },
+  {
+    path: "/nuevo-usuario",
     element: <ProfileForm />,
   },
   {

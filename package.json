@@ -8,6 +8,7 @@
     "@aws-amplify/storage": "^6.7.5",
     "aws-amplify": "^6.11.0",
     "cra-template": "1.2.0",
+    "framer-motion": "^11.15.0",
     "instaboda": "file:",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

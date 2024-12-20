@@ -2,8 +2,8 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "instaba2e36241",
+    "allowUnauthenticatedIdentities": true,
+    "resourceNameTruncated": "instab92a35947",
     "userPoolName": "instaboda",
     "autoVerifiedAttributes": [
       "email"
@@ -24,15 +24,17 @@
       "Requires Symbols",
       "Requires Uppercase"
     ],
-    "requiredAttributes": [],
+    "requiredAttributes": [
+      "email"
+    ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "instaba2e36241_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "instab92a35947_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "a2e36241",
+    "sharedId": "92a35947",
     "resourceName": "instaboda",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
@@ -46,6 +48,20 @@
     "thirdPartyAuth": false,
     "authProviders": [],
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": []
   }
 }
