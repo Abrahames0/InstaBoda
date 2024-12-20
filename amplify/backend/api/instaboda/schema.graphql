@@ -1,0 +1,16 @@
+type Imagenes @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  url: [String]
+  description: String
+  likes: Int
+  Usuarios: Usuarios @belongsTo(fields: ["usuariosID"])
+  usuariosID: ID! @index(name: "byUsuarios")
+}
+
+type Usuarios @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  nombre: String
+  imagenPerfil: String
+  Imagenes: [Imagenes] @hasMany(indexName: "byUsuarios", fields: ["id"])
+}
+ 

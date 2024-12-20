@@ -1,0 +1,26 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-instaboda-staging-beb46-authRole",
+      "UnauthRoleArn": "arn:aws:iam::515966535070:role/amplify-instaboda-staging-beb46-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::515966535070:role/amplify-instaboda-staging-beb46-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-instaboda-staging-beb46-deployment",
+      "UnauthRoleName": "amplify-instaboda-staging-beb46-unauthRole",
+      "StackName": "amplify-instaboda-staging-beb46",
+      "StackId": "arn:aws:cloudformation:us-east-1:515966535070:stack/amplify-instaboda-staging-beb46/652299e0-bd04-11ef-9635-0affc744722f",
+      "AmplifyAppId": "d39tae925c0hlg"
+    },
+    "categories": {
+      "storage": {
+        "instaboda2230ca62": {
+          "bucketName": "stayfinder-storage-771fbe21d527c-dev",
+          "region": "us-east-1"
+        }
+      },
+      "auth": {
+        "instaboda": {}
+      }
+    }
+  }
+}
