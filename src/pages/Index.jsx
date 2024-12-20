@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Usuarios } from '../models';
 import { DataStore } from '@aws-amplify/datastore';
+import { motion } from 'framer-motion';
 
 const ProfileForm = () => {
   const [avatarUrl, setAvatarUrl] = useState(null);
@@ -10,7 +11,6 @@ const ProfileForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Redirige al dashboard si el usuario ya está guardado en localStorage
   useEffect(() => {
     const savedUser = localStorage.getItem('savedUser');
     if (savedUser) {
@@ -18,13 +18,11 @@ const ProfileForm = () => {
     }
   }, [navigate]);
 
-  // Regenera el avatar cada vez que cambia el nombre, si el nombre es válido
+  // Regenera el avatar cada vez que cambia el nombre
   useEffect(() => {
     if (userName.trim()) {
       setAvatarUrl(
-        `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
-          userName
-        )}`
+        `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(userName)}`
       );
       setErrorMessage('');
     } else {
@@ -49,7 +47,6 @@ const ProfileForm = () => {
         })
       );
 
-      // Guardar en localStorage
       localStorage.setItem(
         'savedUser',
         JSON.stringify({
@@ -88,6 +85,16 @@ const ProfileForm = () => {
         </div>
       </div>
 
+      {/* Instrucciones sutiles y prácticas */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+        className="text-gray-700 text-center mt-6 px-6 max-w-md"
+      >
+        Ingrese su nombre para generar un avatar y luego presione "Guardar" para continuar.
+      </motion.p>
+
       {/* Formulario */}
       <div className="max-w-2xl w-full text-center mt-8 px-6">
         <input
@@ -103,7 +110,7 @@ const ProfileForm = () => {
         <button
           onClick={handleSaveUser}
           disabled={loading}
-          className="inline-block bg-[#000080] text-white py-3 px-6 rounded-full hover:bg-[#41416c] mt-6 disabled:bg-gray-400"
+          className="inline-block bg-[#000080] text-white py-3 px-6 rounded-full hover:bg-[#41416c] mt-6 disabled:bg-gray-400 transition-transform duration-300"
         >
           {loading ? 'Guardando...' : 'Guardar'}
         </button>

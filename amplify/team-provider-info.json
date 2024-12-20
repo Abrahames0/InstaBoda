@@ -21,7 +21,23 @@
       },
       "auth": {
         "instaboda": {}
+      },
+      "api": {
+        "instaboda": {}
       }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-instaboda-dev-c2d53-authRole",
+      "UnauthRoleArn": "arn:aws:iam::515966535070:role/amplify-instaboda-dev-c2d53-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::515966535070:role/amplify-instaboda-dev-c2d53-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-instaboda-dev-c2d53-deployment",
+      "UnauthRoleName": "amplify-instaboda-dev-c2d53-unauthRole",
+      "StackName": "amplify-instaboda-dev-c2d53",
+      "StackId": "arn:aws:cloudformation:us-east-1:515966535070:stack/amplify-instaboda-dev-c2d53/b7f8e0f0-beaf-11ef-85f9-0e57c25c328b",
+      "AmplifyAppId": "d39tae925c0hlg"
     }
   }
 }
