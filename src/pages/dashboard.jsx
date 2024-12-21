@@ -108,28 +108,31 @@ const Dashboard = () => {
         ))}
       </motion.div>
 
+      {/* Sección para mostrar imágenes */}
       {filteredImages.length > 0 ? (
-        <div className="columns-2 sm:columns-3 items-center md:columns-4 gap-4">
+        <div className="columns-2 sm:columns-3 md:columns-4 gap-4">
           <AnimatePresence>
-            {filteredImages.map((image) => (
-              <motion.div
-                key={image.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="mb-4 break-inside-avoid items-center rounded-lg overflow-hidden shadow-md"
-              >
-                <img
-                  src={image.url}
-                  alt={image.description}
-                  className="w-full h-auto"
-                />
-                <div className="p-2 bg-white">
-                  <p className="text-sm text-gray-500">{image.description}</p>
-                </div>
-              </motion.div>
-            ))}
+            {filteredImages.flatMap((image) =>
+              image.url.map((singleUrl, idx) => (
+                <motion.div
+                  key={`${image.id}-${idx}`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="mb-4 break-inside-avoid items-center rounded-lg overflow-hidden shadow-md"
+                >
+                  <img
+                    src={singleUrl}
+                    alt={image.description}
+                    className="w-full h-auto"
+                  />
+                  <div className="p-2 bg-white">
+                    <p className="text-sm text-gray-500">{image.description}</p>
+                  </div>
+                </motion.div>
+              ))
+            )}
           </AnimatePresence>
         </div>
       ) : (

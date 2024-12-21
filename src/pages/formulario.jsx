@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { DataStore } from "@aws-amplify/datastore";
 import { Imagenes } from "../models";
 import { uploadData } from "@aws-amplify/storage";
@@ -10,6 +12,10 @@ const AddPublication = () => {
   const [files, setFiles] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [isExiting, setIsExiting] = useState(false);
+
+  const navigate = useNavigate();
 
   const triggerFileInput = () => {
     fileInput.current.click();
@@ -28,6 +34,13 @@ const AddPublication = () => {
       alert("Por favor, selecciona imágenes y agrega una descripción.");
       return;
     }
+
+    const savedUser = localStorage.getItem("savedUser");
+    if (!savedUser) {
+      alert("No hay un usuario activo. Por favor, inicia sesión o regístrate.");
+      return;
+    }
+    const { id: usuarioID } = JSON.parse(savedUser);
 
     try {
       setLoading(true);
@@ -57,20 +70,21 @@ const AddPublication = () => {
         })
       );
 
-      // Guardar URLs (como arreglo) y descripción en DataStore
       await DataStore.save(
         new Imagenes({
           url: uploadedUrls,
           description,
           likes: 0,
-          usuariosID: "ae7dd204-a1f8-4bd1-9af8-e7f487f8f902",
+          usuariosID: usuarioID,
         })
       );
 
       alert("Imágenes subidas exitosamente.");
-      setFiles([]);
-      setPreviewUrls([]);
-      setDescription("");
+
+      setIsExiting(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
     } catch (error) {
       console.error("Error al subir imágenes:", error);
       alert("Hubo un error al subir las imágenes. Inténtalo de nuevo.");
@@ -80,7 +94,11 @@ const AddPublication = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <motion.div
+      className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4"
+      animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       <h1 className="text-2xl font-bold mb-6">Agregar Publicación</h1>
 
       <div
@@ -98,7 +116,8 @@ const AddPublication = () => {
         <div className="flex flex-col items-center">
           <FcUpload size={28} />
           <span className="text-gray-700">
-            Agrega las imágenes {files.length > 0 && <span>({files.length} seleccionadas)</span>}
+            Agrega las imágenes{" "}
+            {files.length > 0 && <span>({files.length} seleccionadas)</span>}
           </span>
         </div>
       </div>
@@ -106,12 +125,7 @@ const AddPublication = () => {
       {previewUrls.length > 0 && (
         <div className="w-full max-w-lg grid grid-cols-3 gap-2 mb-6">
           {previewUrls.map((url, index) => (
-            <img
-              key={index}
-              src={url}
-              alt={`Preview ${index}`}
-              className="w-full h-24 object-cover rounded-lg"
-            />
+            <img key={index} src={url} alt={`Preview ${index}`} className="w-full h-24 object-cover rounded-lg"/>
           ))}
         </div>
       )}
@@ -130,13 +144,13 @@ const AddPublication = () => {
       </div>
 
       <button
-        className="w-full max-w-lg bg-blue-800 text-white py-3 rounded-2xl hover:bg-blue-900"
+        className="w-full max-w-lg bg-blue-800 text-white py-3 rounded-2xl hover:bg-blue-900 disabled:bg-gray-400"
         onClick={uploadImages}
         disabled={loading}
       >
         {loading ? "Subiendo..." : "Agregar Fotografías"}
       </button>
-    </div>
+    </motion.div>
   );
 };
 
