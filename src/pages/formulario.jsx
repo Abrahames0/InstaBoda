@@ -84,8 +84,8 @@ const AddPublication = () => {
     Swal.fire({
       icon: "success",
       title: "¡Imágenes subidas exitosamente!",
-      text: "Tus imágenes han sido guardadas correctamente.",
-      confirmButtonText: "Ir al Inicio",
+      text: "Gracias por compartirnos tu experiencia, y ser parte de nuestro evento.",
+      confirmButtonText: "ver publicaciones",
       confirmButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
