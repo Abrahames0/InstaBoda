@@ -5,6 +5,7 @@ import { DataStore } from "@aws-amplify/datastore";
 import { Imagenes } from "../models";
 import { uploadData } from "@aws-amplify/storage";
 import { FcUpload } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 const AddPublication = () => {
   const fileInput = useRef(null);
@@ -30,8 +31,8 @@ const AddPublication = () => {
   };
 
   const uploadImages = async () => {
-    if (!files.length || !description) {
-      alert("Por favor, selecciona imágenes y agrega una descripción.");
+    if (!files.length) {
+      alert("Por favor, selecciona imágenes para subir.");
       return;
     }
 
@@ -79,18 +80,32 @@ const AddPublication = () => {
         })
       );
 
-      alert("Imágenes subidas exitosamente.");
+    // Alerta de SweetAlert2 al subir exitosamente
+    Swal.fire({
+      icon: "success",
+      title: "¡Imágenes subidas exitosamente!",
+      text: "Tus imágenes han sido guardadas correctamente.",
+      confirmButtonText: "Ir al Inicio",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setIsExiting(true);
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
+      }
+    });
+  } catch (error) {
+    console.error("Error al subir imágenes:", error);
 
-      setIsExiting(true);
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    } catch (error) {
-      console.error("Error al subir imágenes:", error);
-      alert("Hubo un error al subir las imágenes. Inténtalo de nuevo.");
-    } finally {
-      setLoading(false);
-    }
+    Swal.fire({
+      icon: "error",
+      title: "Error al subir las imágenes",
+      text: "Hubo un problema. Por favor, inténtalo de nuevo.",
+    });
+  } finally {
+    setLoading(false);
+  }
   };
 
   return (
@@ -99,8 +114,14 @@ const AddPublication = () => {
       animate={isExiting ? { opacity: 0 } : { opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <h1 className="text-2xl font-bold mb-6">Agregar Publicación</h1>
-
+      <h1 className="text-2xl font-bold mb-3">Agregar Publicación</h1>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+        className="text-gray-700 text-center px-6  mb-6 max-w-md">
+        Ingresa las imagenes que quieres publicar y agregale una descripción.
+      </motion.p>
       <div
         className="w-full max-w-lg p-4 border border-gray-300 rounded-2xl flex items-center justify-center cursor-pointer mb-4 hover:border-blue-500"
         onClick={triggerFileInput}

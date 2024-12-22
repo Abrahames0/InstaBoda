@@ -42,7 +42,7 @@ const Welcome = () => {
           style={{ color: '#F7E7CE' }}
           className="text-4xl md:text-5xl font-bold mb-4"
         >
-          ¡Bienvenido!
+          ¡Gracias por acompañarnos en nuestro gran día!
         </motion.h1>
 
         <motion.p
@@ -52,7 +52,8 @@ const Welcome = () => {
           style={{ color: '#F7E7CE' }}
           className="text-lg md:text-xl max-w-xl mb-8 leading-relaxed"
         >
-          Nos complace recibirte. Prepárate para iniciar un nuevo recorrido, con la mayor elegancia y distinción.
+          Hemos creado esta página para que compartas tus fotos y experiencias de la boda.
+          ¡Nos encantará revivir cada momento a través de tus imágenes!
         </motion.p>
         
         <motion.button

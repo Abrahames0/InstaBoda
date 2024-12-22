@@ -3,28 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { Usuarios } from '../models';
 import { DataStore } from '@aws-amplify/datastore';
 import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
 
 const ProfileForm = () => {
   const [userName, setUserName] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState(null); // El avatar que el usuario selecciona
-  const [avatars, setAvatars] = useState([]); // Arreglo con todos los avatares disponibles
-  const [currentPage, setCurrentPage] = useState(0); // Para controlar qué 3 avatares se muestran
+  const [selectedAvatar, setSelectedAvatar] = useState(null); 
+  const [avatars, setAvatars] = useState([]); 
+  const [currentPage, setCurrentPage] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Cada "página" del carrusel muestra 3 avatares
   const AVATARS_PER_PAGE = 2;
 
   useEffect(() => {
-    // Si el usuario ya había sido guardado, redireccionamos.
     const savedUser = localStorage.getItem('savedUser');
     if (savedUser) {
       navigate('/dashboard');
     }
   }, [navigate]);
 
-  // Cada vez que cambie el nombre, generamos nuevos avatares
   useEffect(() => {
     if (userName.trim()) {
       generateAvatars();
@@ -37,25 +35,20 @@ const ProfileForm = () => {
     }
   }, [userName]);
 
-  // Función para generar un listado de avatares en base al nombre
   const generateAvatars = () => {
-    // Supongamos que quieres generar 15 opciones de avatar
-    const totalAvatars = 15;
+    const totalAvatars = 25;
     const newAvatars = [];
 
     for (let i = 0; i < totalAvatars; i++) {
       const randomSeed = Math.random().toString(36).substring(7);
-      // Combina el nombre con una pequeña semilla aleatoria
       const avatarUrl = `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
         `${userName}-${randomSeed}`
       )}`;
       newAvatars.push(avatarUrl);
     }
-
     setAvatars(newAvatars);
   };
 
-  // Guardar el usuario
   const handleSaveUser = async () => {
     if (!userName.trim() || !selectedAvatar) {
       setErrorMessage('Por favor, completa el nombre y selecciona un avatar.');
@@ -68,7 +61,7 @@ const ProfileForm = () => {
       const savedUser = await DataStore.save(
         new Usuarios({
           nombre: userName.trim(),
-          imagenPerfil: selectedAvatar, // Avatar seleccionado
+          imagenPerfil: selectedAvatar,
         })
       );
 
@@ -81,8 +74,17 @@ const ProfileForm = () => {
         })
       );
 
-      alert('Usuario guardado correctamente.');
-      navigate('/dashboard');
+      Swal.fire({
+        icon: 'success',
+        title: '¡Usuario guardado correctamente!',
+        text: 'Ahora podrás acceder a tu perfil.',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Continuar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/dashboard');
+        }
+      });
     } catch (error) {
       console.error('Error al guardar el usuario:', error);
       setErrorMessage('Hubo un error al guardar el usuario. Inténtalo de nuevo.');
@@ -91,7 +93,6 @@ const ProfileForm = () => {
     }
   };
 
-  // Manejo de carrusel
   const totalPages = Math.ceil(avatars.length / AVATARS_PER_PAGE);
 
   const handleNext = () => {
@@ -102,14 +103,12 @@ const ProfileForm = () => {
     setCurrentPage((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
-  // Calcular los avatares que se muestran en la “página” actual
   const startIndex = currentPage * AVATARS_PER_PAGE;
   const endIndex = startIndex + AVATARS_PER_PAGE;
   const avatarsToShow = avatars.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center animate-fadeIn">
-      {/* Título / Instrucciones */}
       <motion.h1
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -128,7 +127,6 @@ const ProfileForm = () => {
         Ingresa tu nombre para generar varias opciones de avatar. Selecciona tu favorito y presiona "Guardar".
       </motion.p>
 
-      {/* Campo para el nombre */}
       <div className="max-w-2xl w-full text-center mt-8 px-6">
         <input
           type="text"
@@ -141,7 +139,6 @@ const ProfileForm = () => {
         />
       </div>
 
-      {/* Carrusel de Avatares */}
       {avatars.length > 0 && (
         <div className="max-w-xl w-full mt-6 px-6">
           <div className="flex justify-center items-center mb-2">
@@ -153,18 +150,17 @@ const ProfileForm = () => {
               Anterior
             </button>
             <span className="text-gray-700 font-semibold">
-              Página {currentPage + 1} de {totalPages}
+              Avatares {currentPage + 1} de {totalPages}
             </span>
             <button
               onClick={handleNext}
               disabled={currentPage === totalPages - 1}
               className="bg-white text-gray-700 border border-gray-300 rounded-full py-1 px-3 text-sm shadow-md hover:bg-gray-100 disabled:opacity-50 ml-4"
             >
-              Siguiente
+              Más opciones
             </button>
           </div>
 
-          {/* Contenedor “horizontal” con 3 avatares */}
           <div className="flex justify-center gap-4 overflow-x-auto">
             {avatarsToShow.map((avatar, index) => (
               <div
@@ -190,14 +186,13 @@ const ProfileForm = () => {
         </div>
       )}
 
-      {/* Botón de Guardar */}
       <div className="max-w-2xl w-full text-center mt-6 px-6">
         <button
           onClick={handleSaveUser}
           disabled={loading}
           className="inline-block bg-[#000080] text-white py-3 px-6 rounded-full hover:bg-[#41416c] disabled:bg-gray-400 transition-transform duration-300"
         >
-          {loading ? 'Guardando...' : 'Guardar'}
+          {loading ? 'Guardando...' : 'Guardar perfil'}
         </button>
 
         {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
