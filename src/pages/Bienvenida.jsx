@@ -10,7 +10,7 @@ const Welcome = () => {
     setIsAnimating(true);
     setTimeout(() => {
       navigate('/nuevo-usuario');
-    }, 1000);
+    }, 2000);
   };
 
   return (
@@ -52,7 +52,7 @@ const Welcome = () => {
           style={{ color: '#F7E7CE' }}
           className="text-lg md:text-xl max-w-xl mb-8 leading-relaxed"
         >
-          Hemos creado esta página para que compartas tus fotos y experiencias de la boda.
+          Hemos creado esta página para que compartas tus fotos y experiencias de este gran evento.
           ¡Nos encantará revivir cada momento a través de tus imágenes!
         </motion.p>
         
@@ -70,7 +70,6 @@ const Welcome = () => {
         </motion.button>
       </div>
 
-      {/* Animación de carga elegante con puntos suspensivos */}
       <AnimatePresence>
         {isAnimating && (
           <motion.div
@@ -90,7 +89,6 @@ const Welcome = () => {
             >
               <div className="text-xl font-medium">
                 Cargando
-                {/* Tres puntos animados sutilmente */}
                 <motion.span
                   className="inline-block"
                   animate={{ opacity: [0, 1, 0] }}

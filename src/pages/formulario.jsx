@@ -80,7 +80,6 @@ const AddPublication = () => {
         })
       );
 
-    // Alerta de SweetAlert2 al subir exitosamente
     Swal.fire({
       icon: "success",
       title: "¡Imágenes subidas exitosamente!",

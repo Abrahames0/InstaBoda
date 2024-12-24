@@ -147,7 +147,7 @@ const ProfileForm = () => {
               disabled={currentPage === 0}
               className="bg-white text-gray-700 border border-gray-300 rounded-full py-1 px-3 text-sm shadow-md hover:bg-gray-100 disabled:opacity-50 mr-4"
             >
-              Anterior
+              Menos opciones
             </button>
             <span className="text-gray-700 font-semibold">
               Avatares {currentPage + 1} de {totalPages}
