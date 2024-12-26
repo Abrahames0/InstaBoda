@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/image/:imageId",
+    path: "/image/:imageId/:index",
     element: <ImageDetail />
   }
 

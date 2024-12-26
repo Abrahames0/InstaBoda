@@ -41,8 +41,8 @@ const Dashboard = () => {
   };
 
   // Nueva función para ir a la página de detalle
-  const handleImageClick = (imageId) => {
-    navigate(`/image/${imageId}`);
+  const handleImageClick = (imageId, index) => {
+    navigate(`/image/${imageId}/${index}`);
   };
 
   return (
@@ -131,7 +131,7 @@ const Dashboard = () => {
                   className="mb-4 break-inside-avoid rounded-lg overflow-hidden shadow-md"
                 >
                   {/* Al hacer clic, navegamos al detalle de esta publicación (pasamos el ID de Imagenes) */}
-                  <div onClick={() => handleImageClick(image.id)}>
+                  <div onClick={() => handleImageClick(image.id, idx)}                  >
                     <img
                       src={singleUrl}
                       alt={image.description}

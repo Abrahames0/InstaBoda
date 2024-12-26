@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AiFillHeart } from "react-icons/ai";
 
 const ImageDetail = () => {
-  const { imageId } = useParams();
+  const { imageId, index } = useParams(); // <-- AHORA tienes también 'index'
   const navigate = useNavigate();
 
   const [currentImage, setCurrentImage] = useState(null);
@@ -78,7 +78,7 @@ const ImageDetail = () => {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
         <motion.img
-          src={currentImage.url[0]}
+          src={currentImage.url[index]}
           alt={currentImage.description}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
